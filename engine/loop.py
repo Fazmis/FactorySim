@@ -34,10 +34,13 @@ class MainEngineLoop:
 
             # user_input()
             user_input_data = "bip"
+
             # simulation()
             super_sim = "bip" + "!"
+
             # render()
-            print(super_sim)
+            # print(super_sim)
+
             time.sleep(max([0, 1/self.fps - (time.time() - last_frame_time)]))
 
     def resume(self):

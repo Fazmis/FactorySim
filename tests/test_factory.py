@@ -1,4 +1,4 @@
-from main import Factory, Floor
+from core import Factory, Floor
 import unittest
 
 class TestFactory(unittest.TestCase):
@@ -18,6 +18,7 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(self.factory.floors[0].name, f"Floor {self.factory.floor_id - 1}")
         self.factory.create_floor((1, 1), "abracadabra")
         self.assertEqual(self.factory.floors[1].name, f"abracadabra")
+
 
 if __name__ == "__main__":
     unittest.main()
