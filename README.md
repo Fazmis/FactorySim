@@ -57,7 +57,7 @@
 ## 🛠️ Технологии
 
 - Python 3
-- Планируется: `pygame`
+- Pygame
 - Git / GitHub
 - PyCharm
 
