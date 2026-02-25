@@ -1,64 +1,79 @@
 import time
-from threading import Thread, Event
+import pygame as pg
+from .render import Render
+from .event_handler import EventHandler
 
 class MainEngineLoop:
     """
-    Класс MainEngineLoop - Главный цикл движка, который будет вызывать расчёт симуляции и рендер
-    GUI/UI, а также использован для сбора ввода пользователя.
-    аттрибуты:
-        running - флаг цикла
-        running_event - флаг события потока (для паузы/возобновления)
-        thread - поток-исполнитель цикла
-        fps - ограничение количества кадров/итераций в секунду
-    методы:
-        _loop - Приватный метод запускающий цикл
-        resume - возобновить работу цикла
-        pause - приостановить работу цикла
-        terminate - завершить работу цикла
-    """
-    def __init__(self, fps:int):
-        self.running = True
-        self.running_event = Event()
-        self.thread = Thread(target=self._loop)
-        self.fps = abs(fps)
-        self.thread.start()
+    Главный цикл движка
 
-    def _loop(self):
+    Вызывает обработку ввода пользователя, расчёт симуляции, рендер
+    GUI/UI. Держит frame-rate. Имеет возможность остановки/возобновления расчёта симуляции.
+
+    Аттрибуты:
+        fps (int): Ограничение количества кадров/итераций в секунду
+        handler_user_input (EventHandler): Класс обработчик ввода
+        render (Render): Класс для управления отрисовкой pygame
+        running (bool): Флаг цикла
+        running_sim (bool): Флаг симуляции (для паузы/возобновления симуляции)
+        pg_clock (pygame.time.Clock): Менеджер времени pygame
+    Методы:
+        _loop(): Приватный метод цикла (для запуска start())
+        resume_sim(): Возобновить расчёт симуляции
+        pause(): Приостановить расчёт симуляции
+        start(): Запустить работу цикла
+        terminate(): Завершить работу цикла
+    """
+    def __init__(self, fps:int, handler_user_input:EventHandler, render:Render) -> None:
+        self.fps = abs(fps)
+        self.handler_user_input = handler_user_input
+        self.render = render
+        self.running = True
+        self.running_sim = True
+
+        pg.init()
+        self.pg_clock = pg.time.Clock()
+
+    def _loop(self) -> None:
         """
-        При запуске "крутится" пока не получит команду
+        При запуске "крутится" пока не получит команду.
         Соблюдает ограничение по итерациям (self.fps)
         """
         while self.running:
-            self.running_event.wait()
-            last_frame_time = time.time()
 
-            # user_input()
-            user_input_data = "bip"
+            # user_input
+            self.handler_user_input.process_input(self)
 
-            # simulation()
-            super_sim = "bip" + "!"
+            # simulation
+            if self.running_sim:
+                super_sim = "bip" + "!"
 
-            # render()
-            # print(super_sim)
+            # render
+            self.render.draw()
 
-            time.sleep(max([0, 1/self.fps - (time.time() - last_frame_time)]))
+            self.pg_clock.tick(self.fps)
 
-    def resume(self):
+    def resume_sim(self) -> None:
         """
-        Возобновляет работу цикла
+        Возобновляет работу симуляции
         """
-        self.running_event.set()
+        self.running_sim = True
 
-    def pause(self):
+    def pause_sim(self) -> None:
         """
-        Приостанавливает работу цикла
+        Приостанавливает работу симуляции
         """
-        self.running_event.clear()
+        self.running_sim = False
 
-    def terminate(self):
+    def start(self) -> None:
         """
-        Останавливает работу цикла (и потока!)
+        Запускает работу цикла
+        """
+        self.running = True
+        self._loop()
+
+    def terminate(self) -> None:
+        """
+        Останавливает работу цикла
         """
         self.running = False
-        self.running_event.set()
-        self.thread.join()

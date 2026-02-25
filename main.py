@@ -1,24 +1,12 @@
-import time
-
-from core import Factory
-from engine.loop import MainEngineLoop
-from objects import PlaceableObject
-from engine import MainEngineLoop
+from config import resolution
+from engine import *
 
 if __name__ == '__main__':
-    print("Фабрика с одним цехом и одним объектом:")
-    factory = Factory()
-    factory.create_floor(area=(3, 4))
-    factory.floors[0].place_object(PlaceableObject((2,3)), (0, 0))
-    for row in factory.floors[0].area.grid:
-        print(*row)
-    print()
-
-    print("Пример работы цикла:")
-    loop = MainEngineLoop(2)
-    for _ in range(5):
-        loop.resume()
-        time.sleep(1)
-        loop.pause()
-        print("Цикл остановлен")
-    print()
+    # Обработчик ввода пользователя
+    handler_user_input = EventHandler()
+    # Рендер графики
+    render = Render(window_size=resolution)
+    # Основной цикл движка
+    loop = MainEngineLoop(60, EventHandler(), render)
+    # Запуск основного цикла движка
+    loop.start()
