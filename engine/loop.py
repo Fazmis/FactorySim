@@ -1,7 +1,7 @@
-import time
 import pygame as pg
 from .render import Render
 from .event_handler import EventHandler
+from .simulations_manager import SimulationsManager
 
 class MainEngineLoop:
     """
@@ -13,6 +13,7 @@ class MainEngineLoop:
     Аттрибуты:
         fps (int): Ограничение количества кадров/итераций в секунду
         handler_user_input (EventHandler): Класс обработчик ввода
+        simulation_manager (SimulationsManager): Класс-менеджер симуляций
         render (Render): Класс для управления отрисовкой pygame
         running (bool): Флаг цикла
         running_sim (bool): Флаг симуляции (для паузы/возобновления симуляции)
@@ -24,9 +25,10 @@ class MainEngineLoop:
         start(): Запустить работу цикла
         terminate(): Завершить работу цикла
     """
-    def __init__(self, fps:int, handler_user_input:EventHandler, render:Render) -> None:
+    def __init__(self, fps:int, handler_user_input:EventHandler, simulation_manager:SimulationsManager, render:Render) -> None:
         self.fps = abs(fps)
         self.handler_user_input = handler_user_input
+        self.simulation_manager = simulation_manager
         self.render = render
         self.running = True
         self.running_sim = True
@@ -45,11 +47,10 @@ class MainEngineLoop:
             self.handler_user_input.process_input(self)
 
             # simulation
-            if self.running_sim:
-                super_sim = "bip" + "!"
+            self.simulation_manager.simulate()
 
             # render
-            self.render.draw()
+            self.render.draw(fps_link=round(self.pg_clock.get_fps(), 2))
 
             self.pg_clock.tick(self.fps)
 
