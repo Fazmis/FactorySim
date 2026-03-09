@@ -1,5 +1,4 @@
-from .factory import Factory
-from .floor import Floor
-from .floor_area import FloorArea
+from .map import Map
+from .map_grid import MapGrid
 
-__all__ = ["Factory", "Floor", "FloorArea"]
+__all__ = ["Map", "MapGrid"]

@@ -2,12 +2,12 @@ from config.config import min_area_for_floor_area, max_area_for_floor_area
 from errors.exceptions import DeterminingBoundsError, PlacementError, OutOfBoundsError
 from objects import PlaceableObject
 
-class FloorArea:
+class MapGrid:
     """
-    Класс FloorArea описывает сетку цеха
+    Класс MapGrid описывает сетку карты
     атрибуты:
-        area:tuple[int, int] - Размер сетки цеха в клетках
-        grid:list[list] - Сетка цеха предназначенная для размещения объектов в цеху размерностью "area"
+        area:tuple[int, int] - Размер сетки карты в клетках
+        grid:list[list] - Сетка карты предназначенная для размещения объектов и имеет размерность "area"
     методы:
         is_cell_free - Проверка пуста ли клетка
         is_area_free - Проверка пуста ли область
