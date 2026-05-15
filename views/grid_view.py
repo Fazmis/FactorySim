@@ -16,10 +16,12 @@ class GridView:
     """
     def __init__(self, grid_area) -> None:
         self.grid_area = grid_area
+        self.image = pg.image.load("textures/tiles/ground/grass/low_grove.png")
+        self.image_transformed = self.image.copy()
 
     def draw(self, display:pg.Surface, camera:Camera) -> None:
         cell_size = camera.cell_size
+        self.image_transformed = pg.transform.scale(self.image, size=[cell_size, cell_size])
         for row_index in range(self.grid_area[0]):
             for column_index in range(self.grid_area[1]):
-                rect = (pg.Rect(column_index * cell_size - camera.y, row_index * cell_size - camera.x, cell_size, cell_size))
-                display.fill((rr(256), rr(256), rr(256)), rect)
+                display.blit(self.image_transformed, dest=[column_index * cell_size - camera.y, row_index * cell_size - camera.x])

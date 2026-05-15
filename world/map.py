@@ -1,5 +1,4 @@
 from .map_grid import MapGrid
-from objects import PlaceableObject
 
 
 class Map:
@@ -19,6 +18,8 @@ class Map:
         self.area = MapGrid(area)
         self.objects = []
 
-    def place_object(self, obj:PlaceableObject, top_left: tuple[int, int]):
-        self.area.place_object(obj, top_left)
-        self.objects.append(obj)
+    def place_object(self, obj) -> None:
+        """
+        Временная заглушка
+        """
+        pass

@@ -1,7 +1,9 @@
+#TODO Рефакторинг под совместимость с ECS
 from config.config import min_area_for_floor_area, max_area_for_floor_area
 from errors.exceptions import DeterminingBoundsError, PlacementError, OutOfBoundsError
+"""
 from objects import PlaceableObject
-
+"""
 class MapGrid:
     """
     Класс MapGrid описывает сетку карты
@@ -47,7 +49,7 @@ class MapGrid:
                 if not self.is_cell_free(x, y):
                     return False
         return True
-
+    '''
     def place_object(self, obj: PlaceableObject, top_left: tuple[int, int]):
         """
         Размещает объект по координатам
@@ -75,3 +77,4 @@ class MapGrid:
         for x in range(x0, x1 + 1):
             for y in range(y0, y1 + 1):
                 self.grid[x][y] = obj
+    '''

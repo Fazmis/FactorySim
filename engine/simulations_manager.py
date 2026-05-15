@@ -8,7 +8,7 @@ class SimulationsManager:
         simulations (list[Simulation]): Хранит симуляции для их цикличной обработки
 
     Методы:
-        simulate(): Проходит по всем симуляциям вызывая симуляцию.
+        simulate(): Проходит по всем симуляциям вызывая симуляцию
     """
     def __init__(self) -> None:
         self.simulations = []
